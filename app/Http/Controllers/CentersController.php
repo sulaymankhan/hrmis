@@ -12,7 +12,7 @@ class CentersController extends Controller
         $centers = Center::orderBy('name','desc');
         if( $searchQuery ){
             $centers = Center::where(function($query) use ($searchQuery){
-                $query->orWhere('name',$searchQuery);
+                $query->orWhere('name','like','%'.$searchQuery.'%');
                 $query->orWhere('district',$searchQuery);
                 $query->orWhere('province',$searchQuery);
                 $query->orWhere('country',$searchQuery);
