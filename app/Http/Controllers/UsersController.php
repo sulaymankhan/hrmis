@@ -74,4 +74,15 @@ class UsersController extends Controller
         }
         abort(403);
     }
+
+    public function changePassword(Request $r){
+        $user               = $r->user();
+        $currentPassword    = $r->input('current_password');
+        if( \Auth::guard('web')->attempt(['email'=>$user->email,'password'=>$currentPassword]) ){
+            $user->password     = bcrypt($r->input('new_password'));
+            $user->save();
+            return ['message'=>'پاسورد تغیر داده شده!'];
+        }
+        return ['message'=>'پاسورد فعلی تان غلط است!'];
+    }
 }

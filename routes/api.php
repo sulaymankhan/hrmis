@@ -30,6 +30,7 @@ Route::middleware(['auth','UserAccess:admin,manager,center_manger'])->group(func
     Route::resource('employees','EmployeesController');
     Route::get("/villages",'OthersController@getVillages');
     Route::get('centers','CentersController@index');
+    Route::post('changePassword','UsersController@changePassword');
 });
 
 Route::post("/login","UsersController@login");
