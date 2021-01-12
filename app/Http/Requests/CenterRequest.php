@@ -30,4 +30,13 @@ class CenterRequest extends FormRequest
             'country'=>'required'
         ];
     }
+    public function messages()
+    {
+        return [
+            'name.required' => 'اسم مرکز ضروری میباشد',
+            'district.required'=>'ناحیه ضروری میباشد',
+            'province.required'=>'ولایت ضروری میباشد',
+            'country.required'=>'کشور ضروری میباشد'
+        ];
+    }
 }
