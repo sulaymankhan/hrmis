@@ -29,10 +29,11 @@ class Employee extends Model
 
     public static function getStatusList(){
         return [
-            ['status'=>1,'description'=>'خدمتی'],
-            ['status'=>2,'description'=>'تبدیلی'],
-            ['status'=>3,'description'=>'استعفا'],
-            ['status'=>4,'description'=>'انفکاک'],
+            ['status'=>1,'description'=>'اصلی'],
+            ['status'=>2,'description'=>'خدمتی'],
+            ['status'=>3,'description'=>'تبدیل'],
+            ['status'=>4,'description'=>'استعفا'],
+            ['status'=>5,'description'=>'انفکاک'],
         ];
     }
 

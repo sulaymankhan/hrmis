@@ -26,7 +26,7 @@ class EmployeeRequest extends FormRequest
         return [
             'name'=>'required',
             'father_name'=>'required',
-            'grand_father_name'=>'required',
+           // 'grand_father_name'=>'required',
             'dob'=>'required|date_format:"Y-m-d"',
             'gender'=>'required',
             'marital_status'=>'required',
@@ -53,6 +53,14 @@ class EmployeeRequest extends FormRequest
             'position_type'=>'required',
             'post_title'=>'required',
             'project_name'=>'required'
+        ];
+    }
+
+    public function messages(){
+        return [
+            'name.required'=>'نام ضروری است',
+            'father_name.required'=>'نام پدر ضروری است',
+            'id_details.volume.required_if'=>'جلد تذکره ضروری است'
         ];
     }
 }

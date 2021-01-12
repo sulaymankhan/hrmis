@@ -40,7 +40,7 @@ class EmployeesController extends Controller
        $employee->center_id             = $r->input('center_id');
        $employee->surname               = $r->input('surname');
        $employee->father_name           = $r->input('father_name');
-       $employee->grand_father_name     = $r->input('grand_father_name');
+       $employee->grand_father_name     = $r->input('grand_father_name','-');
        $employee->dob                   = $r->input('dob');
        $employee->gender                = $r->input('gender');
        $employee->marital_status        = $r->input('marital_status');
@@ -86,7 +86,7 @@ class EmployeesController extends Controller
         $employee->name                  = $r->input('name');
         $employee->surname               = $r->input('surname');
         $employee->father_name           = $r->input('father_name');
-        $employee->grand_father_name     = $r->input('grand_father_name');
+        $employee->grand_father_name     = $r->input('grand_father_name','-');
         $employee->dob                   = $r->input('dob');
         $employee->center_id             = $r->input('center_id');
         $employee->gender                = $r->input('gender');
