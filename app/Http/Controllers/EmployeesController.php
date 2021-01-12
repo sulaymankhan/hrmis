@@ -21,23 +21,19 @@ class EmployeesController extends Controller
         }
 
         return $employees->selectRaw(
-            'id_number,
-            employees.name,
-            post_title,
-            section,
-            directorate,
-            surname,
-            contact_number,
-            status,
-            centers.name as center_name'
-        )->leftJoin('centers','center_id','centers.id')->get();
+            'employees.*,centers.name as center_name'
+        )->leftJoin('centers','center_id','centers.id')->take(200)->get();
     }
 
     public function store(EmployeeRequest $r){
-       $paperIdDetails                  = "V:".$r->input('id_details.volume','')." Year:".$r->input('id_details.year','');
-       $paperIdDetails                  = $paperIdDetails." Page:".$r->input('id_details.page','')." Registration:".$r->input('id_details.registration','');
-       $paperIdDetails                  = $paperIdDetails." Sokok:".$r->input('id_details.sokok','');
-       $idDetails                       = $r->input('id_type') =='E' ? $r->input('id_details.nid_no') : $paperIdDetails;
+       $idDetails=[
+           'volume'=>$r->input('id_details.volume',''),
+           'year'=>$r->input('id_details.year',''),
+           'page'=>$r->input('id_details.page',''),
+           'registeration'=>$r->input('id_details.registration',''),
+           'sokok'=>$r->input('id_details.sokok',''),
+           'nid_no'=> $r->input('id_details.nid_no')
+       ];
        $employee                        = new Employee;
        $employee->setId();
        $employee->name                  = $r->input('name');
@@ -69,7 +65,7 @@ class EmployeesController extends Controller
        $employee->monthly_salary = $r->input('monthly_salary');
        $employee->contract_start_date = $r->input('contract_start_date');
        $employee->contract_end_date = $r->input('contract_end_date');
-       $employee->id_details = $idDetails;
+       $employee->id_details = json_encode($idDetails);
        $employee->save();
        return $employee;
     }
@@ -79,10 +75,14 @@ class EmployeesController extends Controller
         if(!$employee){
             abort(404);
         }
-        $paperIdDetails                  = "V:".$r->input('id_details.volume','')." Year:".$r->input('id_details.year','');
-        $paperIdDetails                  = $paperIdDetails." Page:".$r->input('id_details.page','')." Registration:".$r->input('id_details.registration','');
-        $paperIdDetails                  = $paperIdDetails." Sokok:".$r->input('id_details.sokok','');
-        $idDetails                       = $r->input('id_type') =='E' ? $r->input('id_details.nid_no') : $paperIdDetails;
+        $idDetails=[
+            'volume'=>$r->input('id_details.volume',''),
+            'year'=>$r->input('id_details.year',''),
+            'page'=>$r->input('id_details.page',''),
+            'registeration'=>$r->input('id_details.registration',''),
+            'sokok'=>$r->input('id_details.sokok',''),
+            'nid_no'=> $r->input('id_details.nid_no')
+        ];
         $employee->name                  = $r->input('name');
         $employee->surname               = $r->input('surname');
         $employee->father_name           = $r->input('father_name');
@@ -112,7 +112,7 @@ class EmployeesController extends Controller
         $employee->monthly_salary = $r->input('monthly_salary');
         $employee->contract_start_date = $r->input('contract_start_date');
         $employee->contract_end_date = $r->input('contract_end_date');
-        $employee->id_details = $idDetails;
+        $employee->id_details = json_encode($idDetails);
        
         $employee->save();
         return $employee;
@@ -134,5 +134,26 @@ class EmployeesController extends Controller
         }
         $employee->delete();
         return ['message'=>'Deleted!'];
+    }
+
+    public function updateStatus(Request $r){
+        $employee = \App\Employee::where('id',$r->input('employee_id'))->first();
+        if(!$employee){
+            abort(404);
+        }
+        $employee->status = $r->input('status');
+        $employee->save();
+        if( $r->input('note') ){
+            $employee->notes()->create([
+                'user_id'=>$r->user()->id,
+                'note'=>$r->input('note')
+            ]);
+        }
+
+        return $employee;
+    }
+
+    public function getStatusList(){
+        return Employee::getStatusList();
     }
 }

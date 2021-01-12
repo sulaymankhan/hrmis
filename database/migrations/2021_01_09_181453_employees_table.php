@@ -35,7 +35,8 @@ class EmployeesTable extends Migration
             $table->string('education_level')->nullable();
             $table->string('education_field')->nullable();
             $table->string('education_institution')->nullable();
-            $table->string('id_details');
+            $table->string('id_type',1)->default('P');
+            $table->text('id_details');
             $table->string('section');
             $table->string('directorate');
             $table->string('position_code');
