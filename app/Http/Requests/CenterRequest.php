@@ -34,7 +34,7 @@ class CenterRequest extends FormRequest
     {
         return [
             'name.required' => 'اسم مرکز ضروری میباشد',
-            'district.required'=>'ناحیه ضروری میباشد',
+            'district.required'=>'ولسوالی ضروری میباشد',
             'province.required'=>'ولایت ضروری میباشد',
             'country.required'=>'کشور ضروری میباشد'
         ];
