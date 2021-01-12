@@ -41,7 +41,10 @@ class UsersController extends Controller
         $user->role           = $r->input('role');
         $user->center_id      = $r->input('center_id');
         $user->email          = $r->input('email');
-        $user->password       = bcrypt($r->input('password'));
+        if($r->input('password')){
+            $user->password       = bcrypt($r->input('password'));
+        }
+        
         $user->save();
         return $user;
     }

@@ -22,14 +22,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('admin')->middleware(['auth','UserAccess:admin,manager'])->group(function(){
     Route::resource('users','UsersController');
     Route::resource('centers','CentersController');
+    Route::post('employees',"EmployeesController@store");
+   
 });
 
-Route::middleware(['auth','UserAccess:admin,manager,center_manger'])->group(function(){
+Route::middleware(['auth','UserAccess:admin,manager,center_manager'])->group(function(){
     Route::get('employees/getStatusList','EmployeesController@getStatusList');
     Route::post('employees/updateStatus','EmployeesController@updateStatus');
-    Route::resource('employees','EmployeesController');
+    Route::get('employees','EmployeesController@index');
     Route::get("/villages",'OthersController@getVillages');
     Route::get('centers','CentersController@index');
+    Route::put('employees',"EmployeesController@update");
     Route::post('changePassword','UsersController@changePassword');
 });
 

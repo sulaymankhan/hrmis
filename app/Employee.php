@@ -52,7 +52,7 @@ class Employee extends Model
             return '';
         }
         try{
-            if(\strpos('/',$val)){
+            if(\strpos($val,'/')){
                 $date= Jalalian::fromFormat('Y/m/d',$val);
             }else{
                 $date= Jalalian::fromFormat('Y-m-d',$val);
@@ -71,7 +71,7 @@ class Employee extends Model
             return '';
         }
         try{
-            if(\strpos('/',$val)){
+            if(\strpos($val,'/')){
                 $date= Jalalian::fromFormat('Y/m/d',$val);
             }else{
                 $date= Jalalian::fromFormat('Y-m-d',$val);
@@ -93,7 +93,7 @@ class Employee extends Model
             return '';
         }
         try{
-            if(\strpos('/',$val)){
+            if(\strpos($val,'/')){
                 $date= Jalalian::fromFormat('Y/m/d',$val);
             }else{
                 $date= Jalalian::fromFormat('Y-m-d',$val);

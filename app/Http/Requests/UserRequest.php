@@ -25,6 +25,7 @@ class UserRequest extends FormRequest
     {
         return [
             'name'=>'required',
+            'password'=>'required',
             'role'=>'required',
             'center_id'=>'required',
             'email'=>'required|unique:users,email,'.$this->input('id').',id'
