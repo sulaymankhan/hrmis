@@ -28,6 +28,7 @@ Route::prefix('admin')->middleware(['auth','UserAccess:admin,manager'])->group(f
 
 Route::middleware(['auth','UserAccess:admin,manager,center_manager'])->group(function(){
     Route::get('employees/getStatusList','EmployeesController@getStatusList');
+    Route::resource('employees', 'EmployeesController');
     Route::post('employees/updateStatus','EmployeesController@updateStatus');
     Route::get('employees','EmployeesController@index');
     Route::get("/villages",'OthersController@getVillages');
