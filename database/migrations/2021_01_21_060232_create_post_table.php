@@ -23,8 +23,9 @@ class CreatePostTable extends Migration
             $table->integer('center_id')->default(0);
             $table->string('project');
             $table->string('location');
-            $table->string('grade')->default("");
-            $table->integer('step')->default(0);;
+            $table->string('grade')->nullable();
+            $table->integer('step')->default(0);
+            $table->string('has_employee')->nullable();
             $table->timestamps();
         });
     }

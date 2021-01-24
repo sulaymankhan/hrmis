@@ -13,9 +13,21 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $r)
     {
-        return Post::get();
+        $result = new \App\Post;
+        $searchQuery = $r->input('q', '');
+
+        if (in_array($r->user()->role, ['admin', 'manager'])) {
+
+            if ($searchQuery != "") {
+                $result = $result->where(function ($query) use ($searchQuery) {
+                    $query->orWhere('post_code', 'like', $searchQuery . "%");
+                    $query->orWhere('name', 'like', '%' . $searchQuery . '%');
+                });
+            }
+        }
+        return $result->take(100)->get();
     }
 
 
@@ -68,7 +80,7 @@ class PostController extends Controller
     public function update(PostRequest $r)
     {
         $post                 = \App\Post::where('id', $r->input('id'))->first();
-        if (!$post) {
+        if (empty($post)) {
             abort(404);
         }
         $post->name                  = $r->input('name');
@@ -84,7 +96,6 @@ class PostController extends Controller
         $post->save();
         return $post;
     }
-
 
     public function destroy($postId)
     {

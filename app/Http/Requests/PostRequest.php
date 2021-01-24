@@ -25,15 +25,15 @@ class PostRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'post_code' => 'required',
+            'post_code' => 'required|unique:posts,post_code',
             'salary' => 'required',
             'type' => 'required',
             'ddg' => 'required',
-            'center_id' => 'required',
+            'center_id' => 'required|exists:centers,id',
             'project' => 'required',
             'location' => 'required',
             // 'grade'=>'required',
-            // 'step'=>'required',
+            'step' => 'integer',
 
         ];
     }
@@ -43,14 +43,16 @@ class PostRequest extends FormRequest
         return [
             'name.required' => 'نام بست ضروری میباشد',
             'post_code.required' => 'کود بست ضروری میباشد',
+            'post_code.unique' => 'کود بست باید یونیک باشد ',
             'salary.required' => 'مقدار ضروری میباشد',
             'type.required ' => 'نوعیت بست ضروری میباشد',
             'ddg.required' => 'معاونیت ضروری میباشد',
-            'center_id.required' => 'ریاست ویا مرکز ضروری میباشد',
+            'center_id.required' => ' وارد سازی مرکز ضروری میباشد   ',
+            'center_id.exists' => 'مرکز وارد شده موجود نمی باشد',
             'project.required' => 'پروژه ضروری میباشد',
             'location.email' => 'موقیعت بست ضروری میباشد',
             // 'grade.required'=>'گرید بست ضروری میباشد',
-            // 'step.required'=>'قدم بست ضروری میباشد',
+            'step.integer' => 'قدم بست باید عدد باشد ',
         ];
     }
 }

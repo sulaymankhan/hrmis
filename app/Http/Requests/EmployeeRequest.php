@@ -46,7 +46,7 @@ class EmployeeRequest extends FormRequest
             'id_details.registration' => 'required_if:id_type,"P"',
             'id_details.sokok' => 'required_if:id_type,"P"',
             'id_details.nid_no' => 'required_if:id_type,"E"',
-            'post_id' => 'required'
+            'post_id' => 'required|exists:posts,id'
 
         ];
     }
@@ -76,8 +76,7 @@ class EmployeeRequest extends FormRequest
             'id_details.registration.required_if' => 'نمبر ثبت تذکره ضروری میباشد',
             'id_details.sokok.required_if' => 'صکوک تذکره ضروری میباشد',
             'id_details.nid_no.required_if' => 'نمبر تذکره ضروری میباشد',
-            'post_id.required' => 'بست ضروری میباشد'
-
+            'post_id.required|exists' => 'بست ضروری میباشد در صورتیکه موجود باشد'
         ];
     }
 }
