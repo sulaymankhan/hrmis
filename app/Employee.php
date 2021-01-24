@@ -120,4 +120,8 @@ class Employee extends Model
         }
         return json_decode($val);
     }
+
+    public function post(){
+        return $this->belongsTo(\App\Post::class,'post_id','id');
+    }
 }

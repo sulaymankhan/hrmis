@@ -24,12 +24,10 @@ class EmployeesController extends Controller
 
         if ($r->user()->role == 'center_manager') {
             $employees = $employees->where('center_id', $r->user()->center_id);
-            return $employees->selectRaw(
-                'employees.*,"0" as monthly_salary,centers.name as center_name'
-            )->leftJoin('centers', 'center_id', 'centers.id')->take(200)->get();
+            return $employees->take(200)->get();
         }
 
-        return $employees->selectRaw(
+        return $employees->with('post')->selectRaw(
             'employees.*,centers.name as center_name'
         )->leftJoin('centers', 'center_id', 'centers.id')->take(200)->get();
     }
