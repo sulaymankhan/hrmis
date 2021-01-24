@@ -28,12 +28,14 @@ Route::prefix('admin')->middleware(['auth','UserAccess:admin,manager'])->group(f
 
 Route::middleware(['auth','UserAccess:admin,manager,center_manager'])->group(function(){
     Route::get('employees/getStatusList','EmployeesController@getStatusList');
+    Route::resource('employees', 'EmployeesController');
     Route::post('employees/updateStatus','EmployeesController@updateStatus');
     Route::get('employees','EmployeesController@index');
     Route::get("/villages",'OthersController@getVillages');
     Route::get('centers','CentersController@index');
     Route::put('employees',"EmployeesController@update");
     Route::post('changePassword','UsersController@changePassword');
+    Route::resource('posts', 'PostController');
 });
 
 Route::post("/login","UsersController@login");
