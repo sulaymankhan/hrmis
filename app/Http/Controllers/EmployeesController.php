@@ -65,6 +65,9 @@ class EmployeesController extends Controller
         $employee->education_field = $r->input('education_field');
         $employee->education_institution = $r->input('education_institution');
         $employee->post_id = $r->input('post_id');
+        $post =  \App\Post::where('id', '=', $r->input('post_id'))->first();
+        $post->has_employee = 1;
+        $post->update();
         $employee->contract_start_date = $r->input('contract_start_date');
         $employee->contract_end_date = $r->input('contract_end_date');
         $employee->id_details = json_encode($idDetails);
@@ -107,6 +110,9 @@ class EmployeesController extends Controller
             $employee->education_level = $r->input('education_level');
             $employee->education_field = $r->input('education_field');
             $employee->education_institution = $r->input('education_institution');
+            $post =  \App\Post::where('id', '=',  $employee->post_id )->first();
+            $post->has_employee = 0;
+            $post->update();
             $employee->post_id = $r->input('post_id');
             $employee->contract_start_date = $r->input('contract_start_date');
             $employee->contract_end_date = $r->input('contract_end_date');

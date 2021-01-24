@@ -25,7 +25,7 @@ class CreatePostTable extends Migration
             $table->string('location');
             $table->string('grade')->nullable();
             $table->integer('step')->default(0);
-            $table->string('has_employee')->nullable();
+            $table->boolean('has_employee')->default(0);
             $table->timestamps();
         });
     }

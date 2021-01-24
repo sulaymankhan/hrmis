@@ -76,7 +76,8 @@ class EmployeeRequest extends FormRequest
             'id_details.registration.required_if' => 'نمبر ثبت تذکره ضروری میباشد',
             'id_details.sokok.required_if' => 'صکوک تذکره ضروری میباشد',
             'id_details.nid_no.required_if' => 'نمبر تذکره ضروری میباشد',
-            'post_id.required|exists' => 'بست ضروری میباشد در صورتیکه موجود باشد'
+            'post_id.required|exists' => 'بست ضروری میباشد در صورتیکه موجود باشد',
+            'post_id.exists' => 'بست انتخاب شده موجود نمیباشد'
         ];
     }
 }
