@@ -109,7 +109,7 @@ class Employee extends Model
     }
 
     public function getIdDetailsAttribute($val){
-        if(is_null($val)){
+        if(is_null($val) || $val==""){
             return [
                 'volume'=>'',
                 'year'=>'',
