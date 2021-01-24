@@ -24,32 +24,33 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'post_code'=>'required',
-            'salary'=>'required',
-            'type'=>'required',
-            'ddg'=>'required',
-            'center_id'=>'required',
-            'project'=>'required',
-            'location'=>'required',
-            'grade'=>'required',
-            'step'=>'required',
-           
+            'name' => 'required',
+            'post_code' => 'required',
+            'salary' => 'required',
+            'type' => 'required',
+            'ddg' => 'required',
+            'center_id' => 'required',
+            'project' => 'required',
+            'location' => 'required',
+            // 'grade'=>'required',
+            // 'step'=>'required',
+
         ];
     }
 
-    public function messages(){
+    public function messages()
+    {
         return [
-            'name.required'=>'نام بست ضروری میباشد',
-            'post_code.required'=>'کود بست ضروری میباشد',
-            'salary.required'=>'مقدار ضروری میباشد',
-            'type.required '=>'نوعیت بست ضروری میباشد',
-            'ddg.required'=>'معاونیت ضروری میباشد',
-            'center_id.required'=>'ریاست ویا مرکز ضروری میباشد',
-            'project.required'=>'پروژه ضروری میباشد',
-            'location.email'=>'موقیعت بست ضروری میباشد',
-            'grade.required'=>'گرید بست ضروری میباشد',
-            'step.required'=>'قدم بست ضروری میباشد',
+            'name.required' => 'نام بست ضروری میباشد',
+            'post_code.required' => 'کود بست ضروری میباشد',
+            'salary.required' => 'مقدار ضروری میباشد',
+            'type.required ' => 'نوعیت بست ضروری میباشد',
+            'ddg.required' => 'معاونیت ضروری میباشد',
+            'center_id.required' => 'ریاست ویا مرکز ضروری میباشد',
+            'project.required' => 'پروژه ضروری میباشد',
+            'location.email' => 'موقیعت بست ضروری میباشد',
+            // 'grade.required'=>'گرید بست ضروری میباشد',
+            // 'step.required'=>'قدم بست ضروری میباشد',
         ];
     }
 }

@@ -60,17 +60,13 @@ class EmployeesController extends Controller
         $employee->current_address_line_1 = $r->input('current_address.line_1');
         $employee->current_address_district = $r->input('current_address.district');
         $employee->current_address_province = $r->input('current_address.province');
-
         $employee->permanent_address_line_1 = $r->input('permanent_address.line_1');
         $employee->permanent_address_district = $r->input('permanent_address.district');
         $employee->permanent_address_province = $r->input('permanent_address.province');
         $employee->education_level = $r->input('education_level');
         $employee->education_field = $r->input('education_field');
         $employee->education_institution = $r->input('education_institution');
-        $employee->section = $r->input('section');
-        $employee->directorate = $r->input('directorate');
         $employee->post_id = $r->input('post_id');
-
         $employee->contract_start_date = $r->input('contract_start_date');
         $employee->contract_end_date = $r->input('contract_end_date');
         $employee->id_details = json_encode($idDetails);
@@ -113,7 +109,6 @@ class EmployeesController extends Controller
             $employee->education_level = $r->input('education_level');
             $employee->education_field = $r->input('education_field');
             $employee->education_institution = $r->input('education_institution');
-            $employee->section = $r->input('section');
             $employee->post_id = $r->input('post_id');
             $employee->contract_start_date = $r->input('contract_start_date');
             $employee->contract_end_date = $r->input('contract_end_date');
@@ -133,7 +128,6 @@ class EmployeesController extends Controller
         return $employee;
     }
 
-
     public function destroy($employeeId)
     {
         $employee = Employee::where('id', $employeeId)->first();
@@ -151,7 +145,6 @@ class EmployeesController extends Controller
             abort(404);
         }
         $employee->status = $r->input('status');
-        // echo  $employee->status;exit();
         $employee->update();
         if ($r->input('note')) {
             $employee->notes()->create([

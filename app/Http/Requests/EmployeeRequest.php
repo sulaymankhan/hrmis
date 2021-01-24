@@ -34,7 +34,6 @@ class EmployeeRequest extends FormRequest
             'email' => 'email',
             'center_id' => 'required|exists:centers,id',
             'id_type' => 'required',
-            'directorate'=>'required',
             'current_address.line_1' => 'required',
             'current_address.district' => 'required',
             'current_address.province' => 'required',
@@ -47,7 +46,6 @@ class EmployeeRequest extends FormRequest
             'id_details.registration' => 'required_if:id_type,"P"',
             'id_details.sokok' => 'required_if:id_type,"P"',
             'id_details.nid_no' => 'required_if:id_type,"E"',
-            'section' => 'required',
             'post_id' => 'required'
 
         ];
@@ -66,7 +64,6 @@ class EmployeeRequest extends FormRequest
             'email.email' => 'ایمیل ضروری میباشد',
             'center_id.required|exists' => ' وارد سازی مرکز ضروری میباشد طوریکه موجود باشد',
             'id_type.required' => 'نوعیت ضروری میباشد',
-            'directorate.required'=>'ریاست ضروری میباشد',
             'current_address.line_1.required' => 'کوچه سکونت فعلی ضروری میباشد',
             'current_address.district.required' => 'ناحیه سکونت فعلی ضروری میباشد',
             'current_address.province.required' => 'ولایت سکونت فعلی ضروری میباشد',
@@ -79,7 +76,6 @@ class EmployeeRequest extends FormRequest
             'id_details.registration.required_if' => 'نمبر ثبت تذکره ضروری میباشد',
             'id_details.sokok.required_if' => 'صکوک تذکره ضروری میباشد',
             'id_details.nid_no.required_if' => 'نمبر تذکره ضروری میباشد',
-            'section.required' => 'بخش ضروری میباشد',
             'post_id.required' => 'بست ضروری میباشد'
 
         ];

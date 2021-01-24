@@ -37,8 +37,6 @@ class EmployeesTable extends Migration
             $table->string('education_institution')->nullable();
             $table->string('id_type',1)->default('P');
             $table->text('id_details');
-            $table->string('section');
-            $table->string('directorate');
             $table->integer('post_id')->default(0);
             $table->integer('status')->default(0);
             $table->string('contract_start_date')->nullable();
