@@ -27,9 +27,7 @@ class EmployeesController extends Controller
             return $employees->take(200)->get();
         }
 
-        return $employees->with('post')->selectRaw(
-            'employees.*,centers.name as center_name'
-        )->leftJoin('centers', 'center_id', 'centers.id')->take(200)->get();
+        return $employees->with(['post','center'])->take(200)->get();
     }
 
     public function store(EmployeeRequest $r)

@@ -9,7 +9,7 @@ class UsersController extends Controller
 {
     public function index(Request $r){
         $searchQuery = $r->input('q');
-        $users = User::orderBy('name','desc');
+        $users = User::with('center')->orderBy('name','desc');
         if( $searchQuery ){
             $users = User::where(function($query) use ($searchQuery){
                 $query->orWhere('name','like','%'.$searchQuery.'%');
