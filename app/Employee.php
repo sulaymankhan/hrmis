@@ -124,7 +124,7 @@ class Employee extends Model
 
     public function post(){
         if(\Auth::user() && \Auth::user()->role == 'center_manager'){
-            return $this->belongsTo(\App\Post::class,'post_id','id')->select('name','post_code','ddg','center_id','project','location','has_employee');    
+            return $this->belongsTo(\App\Post::class,'post_id','id')->select('id','name','post_code','ddg','center_id','project','location','has_employee');    
         }
         return $this->belongsTo(\App\Post::class,'post_id','id');
     }
