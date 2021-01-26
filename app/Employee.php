@@ -119,13 +119,13 @@ class Employee extends Model
             ];
         }
         
-        return json_decode(json_decode($val));
+        return json_decode($val);
     }
 
     public function post(){
         return $this->belongsTo(\App\Post::class,'post_id','id');
     }
     public function center(){
-        return $this->belongsTo(\App\Center::class,'post_id','id');
+        return $this->belongsTo(\App\Center::class,'center_id','id');
     }
 }
