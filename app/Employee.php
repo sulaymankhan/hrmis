@@ -24,7 +24,7 @@ class Employee extends Model
     }
 
     public function notes(){
-        return $this->hasMany(\App\Employeenote::class,'employee_id','id');
+        return $this->hasMany(\App\EmployeeNote::class,'employee_id','id');
     }
 
     public static function getStatusList(){
