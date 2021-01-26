@@ -11,7 +11,7 @@ class EmployeesController extends Controller
     public function index(Request $r)
     {
         $searchQuery = $r->input('q');
-        $employees = Employee::with(['post','center']);
+        $employees = Employee::orderBy('name');
         if ($searchQuery) {
             $employees = $employees->where(function ($query) use ($searchQuery) {
                 $query->orWhere('id_number', $searchQuery);
@@ -24,10 +24,10 @@ class EmployeesController extends Controller
 
         if ($r->user()->role == 'center_manager') {
             $employees = $employees->where('center_id', $r->user()->center_id);
-            return $employees->take(200)->get();
+            return $employees->with('center')->take(200)->get();
         }
 
-        return $employees->take(200)->get();
+        return $employees->with(['post','center'])->take(200)->get();
     }
 
     public function store(EmployeeRequest $r)
