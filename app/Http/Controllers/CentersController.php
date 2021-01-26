@@ -9,6 +9,7 @@ class CentersController extends Controller
 {
     public function index(Request $r){
         $searchQuery = $r->input('q');
+        $uniqueField = $r->input('unique',false);
         $centers = Center::orderBy('name','desc');
         if( $searchQuery ){
             $centers = Center::where(function($query) use ($searchQuery){
@@ -17,6 +18,10 @@ class CentersController extends Controller
                 $query->orWhere('province',$searchQuery);
                 $query->orWhere('country',$searchQuery);
             });
+        }
+        if($uniqueField){
+            $centers = \App\Center::distinct($uniqueField)->orderBy($uniqueField)->get();
+            return $centers;
         }
 
         return $centers->get();

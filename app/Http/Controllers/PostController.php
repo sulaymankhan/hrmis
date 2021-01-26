@@ -17,6 +17,7 @@ class PostController extends Controller
     {
         $result = new \App\Post;
         $searchQuery = $r->input('q', '');
+        $uniqueField = $r->input('unique',false);
 
         if (in_array($r->user()->role, ['admin', 'manager'])) {
 
@@ -25,6 +26,11 @@ class PostController extends Controller
                     $query->orWhere('post_code', 'like', $searchQuery . "%");
                     $query->orWhere('name', 'like', '%' . $searchQuery . '%');
                 });
+            }
+
+            if($uniqueField){
+                $posts = \App\Post::distinct($uniqueField)->orderBy($uniqueField)->get();
+                return $posts;
             }
         }
         return $result->take(100)->get();
