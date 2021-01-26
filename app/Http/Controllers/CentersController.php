@@ -60,6 +60,7 @@ class CentersController extends Controller
     }
 
     public function destroy($centerId){
+        abort(403);
         $center                 = Center::where('id',$centerId)->first();
         if(!$center){
             abort(404);

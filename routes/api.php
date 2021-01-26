@@ -35,6 +35,7 @@ Route::middleware(['auth','UserAccess:admin,manager,center_manager'])->group(fun
     Route::get('centers','CentersController@index');
     Route::put('employees',"EmployeesController@update");
     Route::post('changePassword','UsersController@changePassword');
+    Route::get('notes','EmployeesController@getNotes');
     Route::resource('posts', 'PostController');
 });
 

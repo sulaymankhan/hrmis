@@ -59,6 +59,7 @@ class UsersController extends Controller
 
 
     public function destroy($userId){
+        abort(403);
         $user                 = User::where('id',$userId)->first();
         if(!$user){
             abort(404);

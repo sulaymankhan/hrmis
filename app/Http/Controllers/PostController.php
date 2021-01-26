@@ -105,6 +105,7 @@ class PostController extends Controller
 
     public function destroy($postId)
     {
+        abort(403);
         $post                 = \App\Post::where('id', $postId)->first();
         if (!$post) {
             abort(404);

@@ -123,6 +123,7 @@ class EmployeesController extends Controller
 
     public function show($employeeId)
     {
+        abort(403);
         $employee                 = \App\Employee::where('id', $employeeId)->first();
         if (!$employee) {
             abort(404);
@@ -132,6 +133,7 @@ class EmployeesController extends Controller
 
     public function destroy($employeeId)
     {
+        abort(403);
         $employee = Employee::where('id', $employeeId)->first();
         if (!$employee) {
             abort(404);
@@ -161,5 +163,18 @@ class EmployeesController extends Controller
     public function getStatusList()
     {
         return Employee::getStatusList();
+    }
+
+    public function getNotes(Request $r){
+        $employee = \App\Employee::where('id',$r->input('id'));
+        if($r->user() && $r->user()->role == 'center_manager'){
+            $employee = $employee->where('center_id',$r->user()->center_id);
+        }
+        $employee = $employee->first();
+        if(!$employee){
+            abort(404);
+        }
+
+        return $employee->notes()->get();
     }
 }
