@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use \Illuminate\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostRequest extends FormRequest
@@ -21,21 +22,37 @@ class PostRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
-            'name' => 'required',
-            'post_code' => 'required|unique:posts,post_code',
-            'salary' => 'required',
-            'type' => 'required',
-            'ddg' => 'required',
-            'center_id' => 'required|exists:centers,id',
-            'project' => 'required',
-            'location' => 'required',
-            // 'grade'=>'required',
-            'step' => 'integer',
+        $result = json_decode(collect($request->server()));
+        if ($result->REQUEST_METHOD == strtoupper("put")) {
+            return [
+                'name' => 'required',
+                'post_code' => 'required',
+                'salary' => 'required',
+                'type' => 'required',
+                'ddg' => 'required',
+                'center_id' => 'required|exists:centers,id',
+                'project' => 'required',
+                'location' => 'required',
+                'step' => 'integer',
 
-        ];
+            ];
+        } else {
+            return [
+                'name' => 'required',
+                'post_code' => 'required|unique:posts,post_code',
+                'salary' => 'required',
+                'type' => 'required',
+                'ddg' => 'required',
+                'center_id' => 'required|exists:centers,id',
+                'project' => 'required',
+                'location' => 'required',
+                // 'grade'=>'required',
+                'step' => 'integer',
+
+            ];
+        }
     }
 
     public function messages()

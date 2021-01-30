@@ -19,14 +19,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::prefix('admin')->middleware(['auth','UserAccess:admin,manager'])->group(function(){
+Route::prefix('admin')->middleware(['auth','LogMiddleware','UserAccess:admin,manager'])->group(function(){
     Route::resource('users','UsersController');
     Route::resource('centers','CentersController');
     Route::post('employees',"EmployeesController@store");
    
 });
 
-Route::middleware(['auth','UserAccess:admin,manager,center_manager'])->group(function(){
+Route::middleware(['auth','LogMiddleware','UserAccess:admin,manager,center_manager'])->group(function(){
     Route::get('employees/getStatusList','EmployeesController@getStatusList');
     Route::resource('employees', 'EmployeesController');
     Route::post('employees/updateStatus','EmployeesController@updateStatus');
@@ -37,5 +37,8 @@ Route::middleware(['auth','UserAccess:admin,manager,center_manager'])->group(fun
     Route::post('changePassword','UsersController@changePassword');
     Route::resource('posts', 'PostController');
 });
+
+// Route::middleware(['LogMiddleware'])->group(function(){
+// });
 
 Route::post("/login","UsersController@login");
