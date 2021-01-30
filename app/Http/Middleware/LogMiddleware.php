@@ -7,6 +7,8 @@ use App\Log;
 use Illuminate\Http\Request;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Expr\Exit_;
+use PhpParser\Node\Stmt\Echo_;
 
 use function PHPSTORM_META\type;
 
@@ -57,16 +59,22 @@ class LogMiddleware
 
     public function getPreviouseDataModel($request)
     {
-        if (strpos("employees", strtolower($request->fullUrl())) !== -1) {
+        $url = explode('/', $request->fullUrl());
+        if (in_array('employees', $url)) {
             $employee = \App\Employee::where('id', $request->input('id'))->first();
             return $employee;
-        } elseif (strpos("centers", strtolower($request->fullUrl())) !== -1) {
+        }
+        if (in_array('centers', $url)) {
             $center = \App\Center::where('id', $request->input('id'))->first();
             return $center;
         }
-        if (strpos("posts", strtolower($request->fullUrl())) !== -1) {
+        if (in_array('posts', $url)) {
             $post = \App\Post::where('id', $request->input('id'))->first();
             return $post;
+        }
+        if (in_array('users', $url)) {
+            $user = \App\User::where('id', $request->input('id'))->first();
+            return $user;
         }
     }
 }
