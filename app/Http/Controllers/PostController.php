@@ -33,6 +33,9 @@ class PostController extends Controller
                 return $posts;
             }
         }
+        if($r->user()->role == 'center_manager'){
+            $result = $result->select('id','name','post_code','type','ddg','center_id','project','location');
+        }
         return $result->take(100)->get();
     }
 
