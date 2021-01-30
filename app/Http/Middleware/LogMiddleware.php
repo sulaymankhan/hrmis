@@ -4,16 +4,14 @@ namespace App\Http\Middleware;
 
 use Illuminate\Support\Collection;
 use App\Log;
-use Illuminate\Http\Request;
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Node\Expr\Exit_;
-use PhpParser\Node\Stmt\Echo_;
-
-use function PHPSTORM_META\type;
 
 class LogMiddleware
 {
+    public $previouseData;
+    
     /**
      * Handle an incoming request.
      *
@@ -22,27 +20,22 @@ class LogMiddleware
      * @return mixed
      */
 
-    public $previouseData;
-
-
 
     public function handle($request, Closure $next)
     {
         $log = json_decode(collect($request->server()));
         if ($request->user() && $request->user()->role) {
             if ($log->REQUEST_METHOD == strtoupper("put")) {
-                /** * used for update method only */
+                /** * used for update request only */
                 $this->previouseData = $this->getPreviouseDataModel($request);
                 $this->setData($request);
             } else {
-                /** used for other post methods */
+                /** used for other request methods */
                 $this->setData($request);
             }
         }
         return $next($request);
     }
-
-
 
     public function setData($request)
     {
@@ -50,7 +43,7 @@ class LogMiddleware
         $logfile                    = new Log;
         $logfile->description       = $logRequest->REQUEST_URI;
         $logfile->requested_url     = $request->fullUrl();
-        $logfile->previouse_data     = $this->previouseData;
+        $logfile->previouse_data    = $this->previouseData;
         $logfile->request_data      = $request->all();
         $logfile->requested_method  =  $logRequest->REQUEST_METHOD;
         $logfile->user_id           = Auth::id();
