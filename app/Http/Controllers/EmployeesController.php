@@ -112,6 +112,7 @@ class EmployeesController extends Controller
             $post->has_employee = 0;
             $post->update();
             $employee->post_id = $r->input('post_id');
+            \App\Post::where('id',$employee->post_id)->update(['has_employee'=>true]);
             $employee->contract_start_date = $r->input('contract_start_date');
             $employee->contract_end_date = $r->input('contract_end_date');
         }
@@ -177,4 +178,52 @@ class EmployeesController extends Controller
 
         return $employee->notes()->get();
     }
+
+    public function filterEmployees(Request $r)
+    {
+        $searchQuery = $r->input('q');
+        $employees = Employee::orderBy('name');
+       
+        if($r->input('filters')){
+            foreach($r->input('filters') as $f):
+                if($f['name'] == 'centers'){
+                    if(count($f['info'])>0){
+                        foreach($f['info'] as $v):
+                         $employees = $employees->where('center_id',$v['value']);
+                        endforeach;
+                    }
+                }
+                if($f['name'] == 'ddg'){
+                    if(count($f['info'])>0){
+                        foreach($f['info'] as $v):
+                            $postIds=\App\Post::orWhere('ddg',$v['value']);
+                        endforeach;
+                     
+                        $postIds=$postIds->get(['id'])->map(function($p){ return $p->id;})->toArray();
+                        $employees = $employees->whereIn('post_id',$postIds);
+                    }
+                   
+                   
+                }
+            endforeach;
+        }
+        if ($searchQuery) {
+            $employees = $employees->where(function ($query) use ($searchQuery) {
+                $query->orWhere('id_number', $searchQuery);
+                $query->orWhere('employees.name', 'like', '%' . $searchQuery . '%');
+                $query->orWhere('surname', $searchQuery);
+                $query->orWhere('father_name', $searchQuery);
+                $query->orWhere('contact_number', 'like', '%' . $searchQuery, '%');
+            });
+        }
+
+        if ($r->user()->role == 'center_manager') {
+            $employees = $employees->where('center_id', $r->user()->center_id);
+            return $employees->with(['post','center'])->take(100)->get();
+        }
+        
+
+        return $employees->with(['post','center'])->take(100)->get();
+    }
+
 }

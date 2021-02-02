@@ -31,12 +31,15 @@ Route::middleware(['auth','UserAccess:admin,manager,center_manager'])->group(fun
     Route::resource('employees', 'EmployeesController');
     Route::post('employees/updateStatus','EmployeesController@updateStatus');
     Route::get('employees','EmployeesController@index');
+    Route::post('filterEmployees','EmployeesController@filterEmployees');
     Route::get("/villages",'OthersController@getVillages');
     Route::get('centers','CentersController@index');
     Route::put('employees',"EmployeesController@update");
     Route::post('changePassword','UsersController@changePassword');
     Route::get('notes','EmployeesController@getNotes');
     Route::resource('posts', 'PostController');
+    Route::post("/filterPosts",'PostController@filterData');
+    Route::get("/getDashboardData",'OthersController@getDashboardData');
 });
 
 Route::post("/login","UsersController@login");

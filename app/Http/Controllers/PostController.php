@@ -116,4 +116,24 @@ class PostController extends Controller
         $post->delete();
         return ['message' => 'Deleted!'];
     }
+
+    public function filterData(Request $r){
+        $data=[];
+        if(!$r->input('filters',false)){
+            $data['centers']= \App\Post::getUniqueCenters();
+            $data['ddg']= \App\Post::getUniqueDdg();
+            return $data;
+        }else{
+            foreach($r->input('filters') as $f):
+                if($f['name'] == 'ddg'){
+                    $data['centers']= \App\Post::getUniqueCenters($f['info']);
+                    $data['ddg']= \App\Post::getUniqueDdg();
+                }
+            endforeach;
+            return $data;
+        }
+   
+
+        return $data;
+    }
 }
