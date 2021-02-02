@@ -19,15 +19,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::prefix('admin')->middleware(['auth','UserAccess:admin,manager'])->group(function(){
-    Route::resource('users','UsersController');
-    Route::resource('centers','CentersController');
-    Route::post('employees',"EmployeesController@store");
-   
+Route::prefix('admin')->middleware(['auth', 'LogMiddleware', 'UserAccess:admin,manager'])->group(function () {
+    Route::resource('users', 'UsersController');
+    Route::resource('centers', 'CentersController');
+    Route::post('employees', "EmployeesController@store");
 });
 
-Route::middleware(['auth','UserAccess:admin,manager,center_manager'])->group(function(){
-    Route::get('employees/getStatusList','EmployeesController@getStatusList');
+Route::middleware(['auth', 'LogMiddleware', 'UserAccess:admin,manager,center_manager'])->group(function () {
+    Route::get('employees/getStatusList', 'EmployeesController@getStatusList');
     Route::resource('employees', 'EmployeesController');
     Route::post('employees/updateStatus','EmployeesController@updateStatus');
     Route::get('employees','EmployeesController@index');
@@ -37,9 +36,14 @@ Route::middleware(['auth','UserAccess:admin,manager,center_manager'])->group(fun
     Route::put('employees',"EmployeesController@update");
     Route::post('changePassword','UsersController@changePassword');
     Route::get('notes','EmployeesController@getNotes');
+    Route::post('changePassword', 'UsersController@changePassword');
     Route::resource('posts', 'PostController');
     Route::post("/filterPosts",'PostController@filterData');
     Route::get("/getDashboardData",'OthersController@getDashboardData');
 });
 
-Route::post("/login","UsersController@login");
+Route::middleware(['auth', 'UserAccess:admin,manager,center_manager'])->group(function () {
+    Route::resource('logs', 'LogsController');
+});
+
+Route::post("/login", "UsersController@login");
