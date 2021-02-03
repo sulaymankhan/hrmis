@@ -17,7 +17,7 @@ class PostController extends Controller
     {
         $result = new \App\Post;
         $searchQuery = $r->input('q', '');
-        $uniqueField = $r->input('unique',false);
+        $uniqueField = $r->input('unique', false);
 
         if (in_array($r->user()->role, ['admin', 'manager'])) {
 
@@ -28,7 +28,7 @@ class PostController extends Controller
                 });
             }
 
-            if($uniqueField){
+            if ($uniqueField) {
                 $posts = \App\Post::distinct($uniqueField)->orderBy($uniqueField)->get();
                 return $posts;
             }
@@ -111,5 +111,25 @@ class PostController extends Controller
         }
         $post->delete();
         return ['message' => 'Deleted!'];
+    }
+
+    public function availablePosts()
+    {
+        $post                 = \App\Post::where('has_employee', 0)->get();
+        if (count($post) <= 0) {
+            // abort(404);
+            return [];
+        }
+        return $post;
+    }
+
+    public function reservedPosts()
+    {
+        $post                 = \App\Post::where('has_employee', 1)->get();
+        if (count($post) <= 0) {
+            // abort(404);
+            return [];
+        }
+        return $post;
     }
 }

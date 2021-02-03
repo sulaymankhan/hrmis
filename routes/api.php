@@ -35,6 +35,8 @@ Route::middleware(['auth', 'LogMiddleware', 'UserAccess:admin,manager,center_man
     Route::put('employees', "EmployeesController@update");
     Route::post('changePassword', 'UsersController@changePassword');
     Route::resource('posts', 'PostController');
+    Route::get('availablePosts', 'PostController@availablePosts');
+    Route::get('reservedPosts', 'PostController@reservedPosts');
 });
 
 Route::middleware(['auth', 'UserAccess:admin,manager,center_manager'])->group(function () {
