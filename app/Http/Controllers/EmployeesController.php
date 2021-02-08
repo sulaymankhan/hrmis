@@ -24,7 +24,7 @@ class EmployeesController extends Controller
 
         if ($r->user()->role == 'center_manager') {
             $employees = $employees->where('center_id', $r->user()->center_id);
-            return $employees->with(['post','center'])->take(50)->get();
+            return $employees->with(['post','center'])->get();
         }
 
         return $employees->with(['post','center'])->take(50)->get();
