@@ -31,6 +31,7 @@ class FilesController extends Controller
         $relatedFile = new \App\RelatedFile;
         $relatedFile->f_id = $r->input('f_id');
         $relatedFile->emp_id = $r->input('emp_id');
+        $relatedFile->description = $r->input('description');
         $relatedFile->save();
         return $relatedFile;
     }

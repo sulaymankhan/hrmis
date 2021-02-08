@@ -6,12 +6,12 @@ use App\Employee;
 use Illuminate\Http\Request;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Http\Requests\EmployeeRequest;
-
+use App\EmployeeExport;
 
 
 class EmployeesController extends Controller
 {
-    protected $exportFields = ['name', 'father_name', 'email'];
+    protected $exportFields = ['employees.name as emName', 'employees.father_name as fatherName', 'employees.email as email'];
     public function index(Request $r)
     {
         $searchQuery = $r->input('q');
@@ -170,16 +170,14 @@ class EmployeesController extends Controller
     public function filterEmployees(Request $r)
     {
         $searchQuery = $r->input('q');
-        $employees = Employee::orderBy('name');
-
+        $employees =   new \App\EmployeeExport;
         if ($r->input('filters')) {
             foreach ($r->input('filters') as $f) :
 
                 if ($f['name'] == 'posts') {
                     if (count($f['info']) > 0) {
                         foreach ($f['info'] as $v) :
-                            $employees = $employees->orWhere('post_id', $v['value'])
-                                ->select($this->exportFields);
+                            $employees = $employees->orWhere('post_id', $v['value']);
                         endforeach;
                     }
                 }
@@ -192,22 +190,8 @@ class EmployeesController extends Controller
                 }
             endforeach;
         }
-        if ($searchQuery) {
-            $employees = $employees->where(function ($query) use ($searchQuery) {
-                $query->orWhere('id_number', $searchQuery);
-                $query->orWhere('employees.name', 'like', '%' . $searchQuery . '%');
-                $query->orWhere('surname', $searchQuery);
-                $query->orWhere('father_name', $searchQuery);
-                $query->orWhere('contact_number', 'like', '%' . $searchQuery, '%');
-            });
-        }
 
-        if ($r->user()->role == 'center_manager') {
-            $employees = $employees->where('center_id', $r->user()->center_id);
-            return $employees->with(['post', 'center'])->take(50)->get();
-        }
-
-        $result = $employees->with(['post', 'center'])->take(50)->get();
+        $result = $employees->take(100)->get();
         return (new FastExcel($result))->export('EmployeesReport_' . sha1(time() . random_int(1, 20000)) . '.xlsx');
     }
 }

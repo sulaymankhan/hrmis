@@ -17,7 +17,7 @@ class CreateRelatedFilesTable extends Migration
             $table->id();
             $table->integer('f_id');
             $table->integer('emp_id');
-            // $table->string('description')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
