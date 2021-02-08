@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCentersTable extends Migration
+class CreateRelatedFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateCentersTable extends Migration
      */
     public function up()
     {
-        Schema::create('centers', function (Blueprint $table) {
+        Schema::create('related_files', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('district');
-            $table->string('province');
-            $table->string('country');
-            $table->string('target');
+            $table->integer('f_id');
+            $table->integer('emp_id');
+            // $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateCentersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('centers');
+        Schema::dropIfExists('related_files');
     }
 }

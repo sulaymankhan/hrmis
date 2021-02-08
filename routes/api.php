@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('admin')->middleware(['auth', 'LogMiddleware', 'UserAccess:admin,manager'])->group(function () {
     Route::resource('users', 'UsersController');
     Route::resource('centers', 'CentersController');
+    Route::get('totalHiredEmployees/{centerId}', 'CentersController@totalHiredEmployees');
     Route::post('employees', "EmployeesController@store");
 });
 
@@ -33,10 +34,17 @@ Route::middleware(['auth', 'LogMiddleware', 'UserAccess:admin,manager,center_man
     Route::get("/villages", 'OthersController@getVillages');
     Route::get('centers', 'CentersController@index');
     Route::put('employees', "EmployeesController@update");
+    Route::get('filterEmployees', "EmployeesController@filterEmployees")->name('filterEmployees');
     Route::post('changePassword', 'UsersController@changePassword');
     Route::resource('posts', 'PostController');
     Route::get('availablePosts', 'PostController@availablePosts');
     Route::get('reservedPosts', 'PostController@reservedPosts');
+});
+
+Route::prefix('files')->group(function () {
+    Route::post('/uploadFile', 'FilesController@uploadFile');
+    Route::post('/assignFileTo', 'FilesController@assignFileTo');
+    Route::get('/viewFile', 'FilesController@viewFile');
 });
 
 Route::middleware(['auth', 'UserAccess:admin,manager,center_manager'])->group(function () {

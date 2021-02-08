@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
-class CreateCentersTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +14,13 @@ class CreateCentersTable extends Migration
      */
     public function up()
     {
-        Schema::create('centers', function (Blueprint $table) {
-            $table->id();
+        Schema::create('files', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('name');
-            $table->string('district');
-            $table->string('province');
-            $table->string('country');
-            $table->string('target');
+            $table->string('real_name');
+            $table->integer('user_id');
+            $table->string('path');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateCentersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('centers');
+        Schema::dropIfExists('files');
     }
 }

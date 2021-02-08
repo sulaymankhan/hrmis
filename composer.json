@@ -15,7 +15,8 @@
         "laravel/framework": "^7.29",
         "laravel/passport": "~9.0",
         "laravel/tinker": "^2.5",
-        "morilog/jalali": "3.*"
+        "morilog/jalali": "3.*",
+        "rap2hpoutre/fast-excel": "^2.4"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
