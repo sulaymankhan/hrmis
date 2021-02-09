@@ -35,9 +35,10 @@ class CreateExportEmployeesView extends Migration
     {
 
         return 
-        'CREATE VIEW employees_export AS SELECT
-            employees.id as employee_id,
+        'CREATE VIEW employee_exports AS SELECT
+            employees.id_number,
             employees.name,
+            employees.surname,
             employees.father_name,
             employees.grand_father_name,
             employees.dob,
@@ -73,6 +74,6 @@ class CreateExportEmployeesView extends Migration
      */
     private function dropView(): string
     {
-        return 'DROP VIEW IF EXISTS employees_export';
+        return 'DROP VIEW IF EXISTS employee_exports';
     }
 }

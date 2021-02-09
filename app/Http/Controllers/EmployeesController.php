@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\EmployeeExport;
 use Illuminate\Http\Request;
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Http\Requests\EmployeeRequest;
-use App\EmployeeExport;
 
 
 class EmployeesController extends Controller
 {
-    protected $exportFields = ['employees.name as emName', 'employees.father_name as fatherName', 'employees.email as email'];
+
     public function index(Request $r)
     {
         $searchQuery = $r->input('q');
@@ -72,7 +72,7 @@ class EmployeesController extends Controller
         $post->update();
         $employee->contract_start_date = $r->input('contract_start_date');
         $employee->contract_end_date = $r->input('contract_end_date');
-        $employee->id_details = json_encode($idDetails);
+        $employee->id_details = $idDetails;
         $employee->save();
         return $employee;
     }
@@ -120,7 +120,7 @@ class EmployeesController extends Controller
             $employee->contract_end_date = $r->input('contract_end_date');
         }
 
-        $employee->id_details = json_encode($idDetails);
+        $employee->id_details = $idDetails;
         $employee->save();
         return $employee;
     }
@@ -170,28 +170,54 @@ class EmployeesController extends Controller
     public function filterEmployees(Request $r)
     {
         $searchQuery = $r->input('q');
-        $employees =   new \App\EmployeeExport;
+        $employees =  EmployeeExport::orderBy('name');
         if ($r->input('filters')) {
             foreach ($r->input('filters') as $f) :
-
-                if ($f['name'] == 'posts') {
+                if ($f['name'] == 'centers') {
                     if (count($f['info']) > 0) {
                         foreach ($f['info'] as $v) :
-                            $employees = $employees->orWhere('post_id', $v['value']);
+                            $employees = $employees->Where('center_id', $v['value']);
                         endforeach;
                     }
                 }
-                if ($f['name'] == 'center_id') {
+                if ($f['name'] == 'ddg') {
                     if (count($f['info']) > 0) {
                         foreach ($f['info'] as $v) :
-                            $employees = $employees->orWhere('center_id', $v['value']);
+                            $postIds = \App\Post::orWhere('ddg', $v['value']);
                         endforeach;
+
+                        $postIds = $postIds->get(['id'])->map(function ($p) {
+                            return $p->id;
+                        })->toArray();
+                        $employees = $employees->whereIn('post_id', $postIds);
                     }
                 }
             endforeach;
         }
+        if ($searchQuery) {
+            $employees = $employees->where(function ($query) use ($searchQuery) {
+                $query->orWhere('id_number', $searchQuery);
+                $query->orWhere('name', 'like', '%' . $searchQuery . '%');
+                $query->orWhere('surname', $searchQuery);
+                $query->orWhere('father_name', $searchQuery);
+                $query->orWhere('contact_number', 'like', '%' . $searchQuery, '%');
+            });
+        }
 
+        if ($r->user()->role == 'center_manager') {
+            $employees = $employees->where('center_id', $r->user()->center_id);
+            $employees->with(['post', 'center'])->take(50)->get();
+        }
         $result = $employees->take(100)->get();
+
+        $result->map(function ($p) {
+            if (is_array($p->id_details)) {
+                foreach ($p->id_details as $k => $d) :
+                    $p->setAttribute($k, $d);
+                endforeach;
+            }
+        });
+        $result->makeHidden('id_details');
         return (new FastExcel($result))->export('EmployeesReport_' . sha1(time() . random_int(1, 20000)) . '.xlsx');
     }
 }
